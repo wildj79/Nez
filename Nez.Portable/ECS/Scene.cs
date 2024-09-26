@@ -311,6 +311,28 @@ namespace Nez
 			Initialize();
 		}
 
+		/// <summary>
+		/// Constructor used in unit testsing.
+		/// </summary>
+		/// <param name="serviceProvider">The service provider</param>
+		/// <param name="rootDirectory">The content root directory</param>
+		public Scene(IServiceProvider serviceProvider, string rootDirectory)
+		{
+			Entities = new EntityList(this);
+			RenderableComponents = new RenderableComponentList();
+			Content = new NezContentManager(serviceProvider, rootDirectory);
+
+			var cameraEntity = CreateEntity("camera");
+			Camera = cameraEntity.AddComponent(new Camera());
+
+			// setup our resolution policy. we'll commit it in begin
+			_resolutionPolicy = _defaultSceneResolutionPolicy;
+			_designResolutionSize = _defaultDesignResolutionSize;
+			_designBleedSize = _defaultDesignBleedSize;
+
+			Initialize();
+		}
+
 
 		#region Scene lifecycle
 
